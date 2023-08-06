@@ -16,7 +16,7 @@ export default async function Dashboard() {
       <Stack direction="row" p={2} flexWrap="wrap">
         {categories?.map((category) => {
           return (
-            <Box p={1}>
+            <Box key={category.id} p={1}>
               <Link
                 href={`/${category.id}`}
                 style={{
