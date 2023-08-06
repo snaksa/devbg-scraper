@@ -4,6 +4,12 @@ import { Table } from "aws-cdk-lib/aws-dynamodb";
 import { Cors, LambdaIntegration, RestApi } from "aws-cdk-lib/aws-apigateway";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import * as path from "path";
+import {
+  DB_STORE_CATEGORIES_GSI,
+  DB_STORE_TABLE,
+} from "../../core/utils/constants";
+import { CategoriesLambda } from "./requests/categories";
+import { StatsLambda } from "./requests/stats";
 
 interface ApiStackProps extends StackProps {
   dbStore: Table;
@@ -33,19 +39,13 @@ export class ApiStack extends Stack {
 
     const singleCategoryResource = statsResource.addResource("{id}");
 
-    const statsHandler = new NodejsFunction(
-      this,
-      "DevbgScraper-RestApi-Stats-GET",
-      {
-        entry: path.resolve(__dirname, "./stats.handler.ts"),
-      }
-    );
-
-    dbStore.grantReadData(statsHandler);
-
     singleCategoryResource.addMethod(
       "GET",
-      new LambdaIntegration(statsHandler)
+      new LambdaIntegration(
+        new StatsLambda(this, "DevbgScraper-RestApi-Stats-GET", {
+          dbStore: dbStore,
+        })
+      )
     );
 
     const categoriesResource = apiGateway.root.addResource("categories", {
@@ -57,19 +57,13 @@ export class ApiStack extends Stack {
       },
     });
 
-    const categoriesHandler = new NodejsFunction(
-      this,
-      "DevbgScraper-RestApi-Categories-GET",
-      {
-        entry: path.resolve(__dirname, "./categories.handler.ts"),
-      }
-    );
-
     categoriesResource.addMethod(
       "GET",
-      new LambdaIntegration(categoriesHandler)
+      new LambdaIntegration(
+        new CategoriesLambda(this, "DevbgScraper-RestApi-Categories-GET", {
+          dbStore: dbStore,
+        })
+      )
     );
-
-    dbStore.grantReadData(categoriesHandler);
   }
 }

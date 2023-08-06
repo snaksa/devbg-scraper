@@ -26,6 +26,9 @@ export class Category {
   }
 
   static fromDynamoDb(data: Record<string, AttributeValue>) {
-    return new Category(data?.id?.S ?? "", data?.name?.S ?? "");
+    const id = data?.id?.S ?? "";
+    const name = data?.name?.S ?? "";
+
+    return new Category(id, name);
   }
 }

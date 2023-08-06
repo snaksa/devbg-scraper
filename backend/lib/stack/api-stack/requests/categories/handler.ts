@@ -1,5 +1,5 @@
 import { DynamoDB, QueryCommand } from "@aws-sdk/client-dynamodb";
-import { Category } from "../../core/model/category";
+import { Category } from "../../../../core/model/category";
 var dynamodb = new DynamoDB({ apiVersion: "2012-08-10" });
 
 const fetchCategories = async (): Promise<Category[]> => {

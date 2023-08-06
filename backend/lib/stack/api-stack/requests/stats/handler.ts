@@ -3,8 +3,8 @@ import {
   GetItemCommand,
   QueryCommand,
 } from "@aws-sdk/client-dynamodb";
-import { Measurement } from "../../core/model/measurement";
-import { Category } from "../../core/model/category";
+import { Measurement } from "../../../../core/model/measurement";
+import { Category } from "../../../../core/model/category";
 var dynamodb = new DynamoDB({ apiVersion: "2012-08-10" });
 
 const fetchMeasurements = async (

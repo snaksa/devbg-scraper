@@ -32,12 +32,12 @@ const fetchPositions = async (url: string) => {
 
 const fetchCategories = async (): Promise<Category[]> => {
   const command = new QueryCommand({
-    TableName: "DbStore",
-    IndexName: "CategoriesGSI",
+    TableName: process.env.dbStore,
+    IndexName: process.env.categoriesGSI,
     KeyConditionExpression: "record_type = :v1",
     ExpressionAttributeValues: {
       ":v1": {
-        S: "CATEGORY",
+        S: Category.TYPE,
       },
     },
   });
