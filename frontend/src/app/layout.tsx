@@ -1,8 +1,10 @@
-import { Box, CssBaseline, Toolbar, Typography } from "@mui/material";
-import type { Metadata } from "next";
+import { Box, CssBaseline, Toolbar } from "@mui/material";
 import AppBar from "@/components/AppBar";
 import { drawerWidth } from "@/utils/constants";
 import { fetchCategories } from "@/utils/client";
+
+// revalidate data cache every 60 seconds
+export const revalidate = 60;
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props;
