@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { Box, useTheme } from "@mui/material";
-import { useMemo } from "react";
+import { Box } from '@mui/material';
+import { useMemo } from 'react';
 import {
-  LineChart as RechartLineChart,
+  CartesianGrid,
+  Legend,
   Line,
+  LineChart as RechartLineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+} from 'recharts';
 
 export interface LineChartItem {
   label: string;
@@ -24,9 +24,8 @@ type LineChartProps = {
   color: string;
 };
 
-export default async function LineChart(props: LineChartProps) {
+export default function LineChart(props: LineChartProps) {
   const { data, label, color } = props;
-  const theme = useTheme();
 
   const [min, max] = useMemo(() => {
     const values = data.map((d) => d.value);
@@ -39,7 +38,7 @@ export default async function LineChart(props: LineChartProps) {
   };
 
   return (
-    <Box width={"100%"} height={300}>
+    <Box width={'100%'} height={300}>
       <ResponsiveContainer width="100%" height="100%">
         <RechartLineChart
           width={500}

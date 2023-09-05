@@ -1,7 +1,6 @@
-import { Box, CssBaseline, Toolbar } from "@mui/material";
-import AppBar from "@/components/AppBar";
-import { drawerWidth } from "@/utils/constants";
-import { fetchCategories } from "@/utils/client";
+import { Box, CssBaseline, Toolbar } from '@mui/material';
+import AppBar from '@/components/AppBar';
+import { drawerWidth } from '@/utils/constants';
 
 // revalidate data cache every 60 seconds
 export const revalidate = 60;
@@ -9,14 +8,12 @@ export const revalidate = 60;
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props;
 
-  const categories = await fetchCategories();
-
   return (
     <html>
       <body>
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: 'flex' }}>
           <CssBaseline />
-          <AppBar categories={categories} />
+          <AppBar />
           <Box
             component="main"
             sx={{

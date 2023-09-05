@@ -1,35 +1,40 @@
-"use client";
+'use client';
 
 import {
-  Box,
   AppBar as MuiAppBar,
-  Toolbar,
-  Typography,
-  useMediaQuery,
+  Box,
   Drawer as MuiDrawer,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   Stack,
+  Toolbar,
+  Typography,
+  useMediaQuery,
   useTheme,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import ReorderIcon from "@mui/icons-material/Reorder";
-import { drawerWidth } from "@/utils/constants";
-import { usePathname, useRouter } from "next/navigation";
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import ReorderIcon from '@mui/icons-material/Reorder';
+import { drawerWidth } from '@/utils/constants';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Category } from '@/models';
+import { fetchCategories } from '@/utils/client';
 
-export default function AppBar(props: {
-  categories: { id: string; name: string }[];
-}) {
-  const isMobile = useMediaQuery("(max-width:600px)");
+export default function AppBar() {
+  const isMobile = useMediaQuery('(max-width:600px)');
   const router = useRouter();
-  const pathname = usePathname();
   const theme = useTheme();
+  const searchParams = useSearchParams();
 
-  const { categories } = props;
+  const currentCategoryId = searchParams.get('id');
 
   const [isOpen, setIsOpen] = useState(true);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    fetchCategories().then((res) => setCategories(res));
+  }, []);
 
   useEffect(() => {
     if (isMobile) {
@@ -46,11 +51,11 @@ export default function AppBar(props: {
       toggleDrawer();
     }
 
-    router.push(`/${categoryId}`);
+    router.push(`?id=${categoryId}`);
   };
 
   const redirectToDashboard = () => {
-    router.push("/");
+    router.push('/');
   };
 
   return (
@@ -62,7 +67,7 @@ export default function AppBar(props: {
         <Toolbar>
           <Stack direction="row" spacing={1} alignItems="center">
             {isMobile && <ReorderIcon onClick={toggleDrawer} />}
-            <Box onClick={redirectToDashboard} sx={{ cursor: "pointer" }}>
+            <Box onClick={redirectToDashboard} sx={{ cursor: 'pointer' }}>
               <Typography variant="h6" noWrap>
                 DevBG
               </Typography>
@@ -72,7 +77,7 @@ export default function AppBar(props: {
       </MuiAppBar>
       <MuiDrawer
         open={isMobile ? isOpen : true}
-        variant={isMobile ? "temporary" : "persistent"}
+        variant={isMobile ? 'temporary' : 'persistent'}
         onClose={toggleDrawer}
         PaperProps={{
           sx: { width: drawerWidth },
@@ -92,7 +97,7 @@ export default function AppBar(props: {
         )}
 
         {!isMobile && <Toolbar />}
-        <Box sx={{ overflow: "auto" }}>
+        <Box sx={{ overflow: 'auto' }}>
           <List>
             {categories.map((d) => (
               <ListItem
@@ -105,14 +110,14 @@ export default function AppBar(props: {
                     primary={d.name}
                     primaryTypographyProps={{
                       style: {
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
 
                         color:
-                          pathname === `/${d.id}`
+                          d.id === currentCategoryId
                             ? theme.palette.primary.light
-                            : "inherit",
+                            : 'inherit',
                       },
                     }}
                   />
