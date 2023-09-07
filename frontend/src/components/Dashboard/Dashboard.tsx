@@ -12,8 +12,12 @@ export default function Dashboard() {
     fetchCategories().then((res) => setCategories(res));
   }, []);
 
+  if (!categories) {
+    return null;
+  }
+
   return (
-    <Box>
+    <Stack width="100%" alignItems="center">
       <Typography variant="h4">Choose category</Typography>
       <Stack direction="row" p={2} flexWrap="wrap">
         {categories?.map((category) => {
@@ -40,6 +44,6 @@ export default function Dashboard() {
           );
         })}
       </Stack>
-    </Box>
+    </Stack>
   );
 }

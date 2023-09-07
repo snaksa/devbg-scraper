@@ -33,8 +33,12 @@ export default function CategoryDetails(props: CategoryDetailsProps) {
     });
   });
 
+  if (!category) {
+    return null;
+  }
+
   return (
-    <Stack spacing={2} p={2} pt={4} alignItems="center">
+    <Stack spacing={2} p={2} pt={4} width='100%' alignItems="center">
       <Typography variant="h4">{category?.name}</Typography>
       <LineChart label="All" data={allPositions} color={'red'} />
       <LineChart label="Remote" data={remotePositions} color={'blue'} />
