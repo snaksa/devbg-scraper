@@ -20,7 +20,7 @@ export class StorageStack extends Stack {
     this.dbStore = new Table(this, "DevbgScraper-DbStore", {
       tableName: DB_STORE_TABLE,
       billingMode: BillingMode.PAY_PER_REQUEST,
-      removalPolicy: RemovalPolicy.DESTROY,
+      removalPolicy: RemovalPolicy.RETAIN,
       partitionKey: { name: "pk", type: AttributeType.STRING },
       sortKey: { name: "sk", type: AttributeType.STRING },
     });
