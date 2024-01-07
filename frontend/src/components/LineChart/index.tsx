@@ -16,21 +16,37 @@ import {
 export interface LineChartItem {
   label: string;
   value: number;
+  all?: number;
+  remote?: number;
 }
 
 type LineChartProps = {
   label: string;
   data: LineChartItem[];
   color: string;
+  isCombined?: boolean;
 };
 
 export default function LineChart(props: LineChartProps) {
-  const { data, label, color } = props;
+  const { data, label, color, isCombined } = props;
 
   const [min, max] = useMemo(() => {
-    const values = data.map((d) => d.value);
-    return [Math.min(...values) - 1, Math.max(...values) + 1];
-  }, [data]);
+    if (!isCombined) {
+      const values = data.map((d) => d.value);
+      return [Math.min(...values) - 5, Math.max(...values) + 5];
+    }
+
+    const allValues = data.map((d) => d.all ?? 0);
+    const remoteValues = data.map((d) => d.remote ?? 0);
+
+    const minAll = Math.min(...allValues);
+    const maxAll = Math.max(...allValues);
+
+    const minRemote = Math.min(...remoteValues);
+    const maxRemote = Math.max(...remoteValues);
+
+    return [Math.min(minAll, minRemote) - 5, Math.max(maxAll, maxRemote) + 5];
+  }, [data, isCombined]);
 
   const tickFormatter = (value: string) => {
     const date = new Date(value);
@@ -38,7 +54,7 @@ export default function LineChart(props: LineChartProps) {
   };
 
   return (
-    <Box width={'100%'} height={300}>
+    <Box width={'100%'} height={isCombined ? 600 : 300}>
       <ResponsiveContainer width="100%" height="100%">
         <RechartLineChart
           width={500}
@@ -60,14 +76,35 @@ export default function LineChart(props: LineChartProps) {
           <YAxis domain={[min, max]} />
           <Tooltip />
           <Legend />
-          <Line
-            name={label}
-            dataKey="value"
-            type="monotone"
-            stroke={color}
-            strokeWidth={2}
-            activeDot={{ r: 8 }}
-          />
+          {isCombined ? (
+            <>
+              <Line
+                name={'All'}
+                dataKey="all"
+                type="monotone"
+                stroke={'red'}
+                strokeWidth={2}
+                activeDot={{ r: 8 }}
+              />
+              <Line
+                name={'Remote'}
+                dataKey="remote"
+                type="monotone"
+                stroke={'blue'}
+                strokeWidth={2}
+                activeDot={{ r: 8 }}
+              />
+            </>
+          ) : (
+            <Line
+              name={label}
+              dataKey="value"
+              type="monotone"
+              stroke={color}
+              strokeWidth={2}
+              activeDot={{ r: 8 }}
+            />
+          )}
         </RechartLineChart>
       </ResponsiveContainer>
     </Box>

@@ -2,7 +2,7 @@
 
 import { Category } from '@/models';
 import { fetchCategoryMeasurements } from '@/utils/client';
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Switch, ToggleButton, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import LineChart, { LineChartItem } from '../LineChart';
 
@@ -14,12 +14,15 @@ export default function CategoryDetails(props: CategoryDetailsProps) {
   const { id } = props;
 
   const [category, setCategory] = useState<Category>();
+  const [showCombined, setShowCombined] = useState<boolean>(true);
+
   useEffect(() => {
     fetchCategoryMeasurements(id).then((res) => setCategory(res));
   }, [id]);
 
   const allPositions: LineChartItem[] = [];
   const remotePositions: LineChartItem[] = [];
+  const combinedPositions: LineChartItem[] = [];
 
   category?.measurements?.forEach((item) => {
     allPositions.push({
@@ -31,6 +34,13 @@ export default function CategoryDetails(props: CategoryDetailsProps) {
       label: item.date,
       value: item.remote,
     });
+
+    combinedPositions.push({
+      label: item.date,
+      value: item.positions,
+      all: item.positions,
+      remote: item.remote,
+    });
   });
 
   if (!category) {
@@ -38,10 +48,28 @@ export default function CategoryDetails(props: CategoryDetailsProps) {
   }
 
   return (
-    <Stack spacing={2} p={2} pt={4} width='100%' alignItems="center">
+    <Stack spacing={2} p={2} pt={4} width="100%" alignItems="center">
       <Typography variant="h4">{category?.name}</Typography>
-      <LineChart label="All" data={allPositions} color={'red'} />
-      <LineChart label="Remote" data={remotePositions} color={'blue'} />
+      <Box>
+        <Switch
+          checked={showCombined}
+          onChange={() => setShowCombined(!showCombined)}
+        />{' '}
+        Show Combined
+      </Box>
+      {!showCombined ? (
+        <>
+          <LineChart label="All" data={allPositions} color={'red'} />
+          <LineChart label="Remote" data={remotePositions} color={'blue'} />
+        </>
+      ) : (
+        <LineChart
+          label="Remote"
+          data={combinedPositions}
+          color={'blue'}
+          isCombined={true}
+        />
+      )}
     </Stack>
   );
 }
