@@ -29,18 +29,12 @@ export default function AppBar() {
 
   const currentCategoryId = searchParams.get('id');
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(!isMobile);
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     fetchCategories().then((res) => setCategories(res));
   }, []);
-
-  useEffect(() => {
-    if (isMobile) {
-      toggleDrawer();
-    }
-  }, [isMobile]);
 
   const toggleDrawer = () => {
     setIsOpen((prev) => !prev);
