@@ -27,7 +27,7 @@ jobs:
 
       - run: rm backend/.env && echo CERTIFICATE_ARN=$CERTIFICATE_ARN > backend/.env
       - run: npm install --prefix backend
-      - run: npm run --prefix backend cdk deploy "*" --require-approval never
+      - run: npm run --prefix backend cdk deploy "*" -- --require-approval never
 
 #      - name: cdk deploy
 #        uses: youyo/aws-cdk-github-actions@v2
