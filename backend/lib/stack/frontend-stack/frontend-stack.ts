@@ -38,6 +38,18 @@ export class FrontendStack extends Stack {
         origin: new S3Origin(websiteBucket, { originAccessIdentity }),
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       },
+      errorResponses: [
+        {
+          httpStatus: 403,
+          responseHttpStatus: 200,
+          responsePagePath: "/index.html",
+        },
+        {
+          httpStatus: 404,
+          responseHttpStatus: 200,
+          responsePagePath: "/index.html",
+        },
+      ],
     });
 
     new BucketDeployment(this, "DevBgScraperFrontendDeployment", {
