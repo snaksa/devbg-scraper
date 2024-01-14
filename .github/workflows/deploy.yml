@@ -26,7 +26,7 @@ jobs:
         with:
           cdk_subcommand: 'deploy'
           cdk_stack: '*'
-          cdk_args: ${{ format('--require-approval never) }}
+          cdk_args: ${{ format('--require-approval never') }}
           working_dir: 'backend'
           debug_log: true
         env:
