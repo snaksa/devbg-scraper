@@ -28,12 +28,12 @@ export class FrontendStack extends Stack {
 
     new Distribution(this, "DevBgScraperFrontendDistribution", {
       defaultRootObject: "index.html",
-      // domainNames: ["sinilinx.com"],
-      // certificate: Certificate.fromCertificateArn(
-      //   this,
-      //   "DevBgScraperFrontendCertificate",
-      //   process.env.CERTIFICATE_ARN ?? "",
-      // ),
+      domainNames: ["sinilinx.com"],
+      certificate: Certificate.fromCertificateArn(
+        this,
+        "DevBgScraperFrontendCertificate",
+        process.env.CERTIFICATE_ARN ?? "",
+      ),
       defaultBehavior: {
         origin: new S3Origin(websiteBucket, { originAccessIdentity }),
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
