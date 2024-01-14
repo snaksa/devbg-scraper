@@ -1,8 +1,6 @@
 import { Box, CssBaseline, Toolbar } from '@mui/material';
-import dynamic from 'next/dynamic';
 import { drawerWidth } from '@/utils/constants';
-
-const AppBar = dynamic(() => import('@/components/AppBar'), { ssr: false });
+import AppBar from '@/components/AppBar';
 
 // revalidate data cache every 60 seconds
 export const revalidate = 60;

@@ -25,11 +25,11 @@ export default function AppBar() {
   const isMobile = useMediaQuery('(max-width:600px)');
   const router = useRouter();
   const theme = useTheme();
-  const searchParams = useSearchParams();
 
-  const currentCategoryId = searchParams.get('id');
+  const params = useSearchParams();
+  const currentCategoryId = params.get('id') as string;
 
-  const [isOpen, setIsOpen] = useState(!isMobile);
+  const [isOpen, setIsOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function AppBar() {
       toggleDrawer();
     }
 
-    router.push(`?id=${categoryId}`);
+    router.push(`/categories?id=${categoryId}`);
   };
 
   const redirectToDashboard = () => {
@@ -60,7 +60,15 @@ export default function AppBar() {
       >
         <Toolbar>
           <Stack direction="row" spacing={1} alignItems="center">
-            {isMobile && <ReorderIcon onClick={toggleDrawer} />}
+            <ReorderIcon
+              sx={{
+                [theme.breakpoints.up('sm')]: {
+                  display: 'none',
+                },
+              }}
+              onClick={toggleDrawer}
+            />
+
             <Box onClick={redirectToDashboard} sx={{ cursor: 'pointer' }}>
               <Typography variant="h6" noWrap>
                 DevBG
@@ -74,7 +82,12 @@ export default function AppBar() {
         variant={isMobile ? 'temporary' : 'persistent'}
         onClose={toggleDrawer}
         PaperProps={{
-          sx: { width: drawerWidth },
+          sx: {
+            width: drawerWidth,
+            '@media (max-width: 600px)': {
+              width: 'auto',
+            },
+          },
         }}
       >
         {isMobile && (
@@ -90,7 +103,13 @@ export default function AppBar() {
           </MuiAppBar>
         )}
 
-        {!isMobile && <Toolbar />}
+        <Toolbar
+          sx={{
+            '@media (max-width: 600px)': {
+              display: 'none',
+            },
+          }}
+        />
         <Box sx={{ overflow: 'auto' }}>
           <List>
             {categories.map((d) => (

@@ -84,7 +84,8 @@ export default function LineChart(props: LineChartProps) {
                 type="monotone"
                 stroke={'red'}
                 strokeWidth={2}
-                activeDot={{ r: 8 }}
+                activeDot={{ r: 4 }}
+                dot={{ r: 0 }}
               />
               <Line
                 name={'Remote'}
@@ -92,7 +93,8 @@ export default function LineChart(props: LineChartProps) {
                 type="monotone"
                 stroke={'blue'}
                 strokeWidth={2}
-                activeDot={{ r: 8 }}
+                activeDot={{ r: 4 }}
+                dot={{ r: 0 }}
               />
             </>
           ) : (
@@ -102,7 +104,8 @@ export default function LineChart(props: LineChartProps) {
               type="monotone"
               stroke={color}
               strokeWidth={2}
-              activeDot={{ r: 8 }}
+              activeDot={{ r: 4 }}
+              dot={{ r: 0 }}
             />
           )}
         </RechartLineChart>

@@ -1,15 +1,15 @@
 import { Stack } from '@mui/material';
+import CategoryDetails from '@/components/CategoryDetails/CategoryDetails';
 import { Metadata } from 'next';
-import Dashboard from '@/components/Dashboard/Dashboard';
 
 export const metadata: Metadata = {
-  title: 'Home | DevBG Scraper',
+  title: 'Category | DevBG Scraper',
 };
 
-export default async function Home() {
+export default async function CategoryPage() {
   return (
     <Stack p={2} pt={4} spacing={2} alignItems="center">
-      <Dashboard />
+      <CategoryDetails />
     </Stack>
   );
 }

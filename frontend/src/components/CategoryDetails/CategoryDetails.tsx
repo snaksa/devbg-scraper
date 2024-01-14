@@ -2,21 +2,22 @@
 
 import { Category } from '@/models';
 import { fetchCategoryMeasurements } from '@/utils/client';
-import { Box, Stack, Switch, ToggleButton, Typography } from '@mui/material';
+import { Box, Stack, Switch, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import LineChart, { LineChartItem } from '../LineChart';
+import { useSearchParams } from 'next/navigation';
 
-type CategoryDetailsProps = {
-  id: string;
-};
-
-export default function CategoryDetails(props: CategoryDetailsProps) {
-  const { id } = props;
+export default function CategoryDetails() {
+  const params = useSearchParams();
+  const id = params.get('id') as string;
 
   const [category, setCategory] = useState<Category>();
   const [showCombined, setShowCombined] = useState<boolean>(true);
 
   useEffect(() => {
+    if (!id) {
+      return;
+    }
     fetchCategoryMeasurements(id).then((res) => setCategory(res));
   }, [id]);
 
@@ -42,6 +43,10 @@ export default function CategoryDetails(props: CategoryDetailsProps) {
       remote: item.remote,
     });
   });
+
+  if (!id) {
+    return 'ID not provided';
+  }
 
   if (!category) {
     return null;
