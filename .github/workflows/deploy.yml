@@ -24,8 +24,9 @@ jobs:
       - name: cdk deploy
         uses: youyo/aws-cdk-github-actions@v2
         with:
-          cdk_subcommand: 'synth'
-#          cdk_stack: '*'
+          cdk_subcommand: 'deploy'
+          cdk_stack: '*'
+          cdk_args: ${{ format('--require-approval never) }}
           working_dir: 'backend'
           debug_log: true
         env:
