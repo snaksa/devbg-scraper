@@ -6,9 +6,12 @@ import {
   Distribution,
   OriginAccessIdentity,
   ViewerProtocolPolicy,
+  LambdaEdgeEventType,
 } from "aws-cdk-lib/aws-cloudfront";
 import { S3Origin } from "aws-cdk-lib/aws-cloudfront-origins";
 import { Certificate } from "aws-cdk-lib/aws-certificatemanager";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import * as path from "path";
 
 export class FrontendStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -26,6 +29,14 @@ export class FrontendStack extends Stack {
 
     websiteBucket.grantRead(originAccessIdentity);
 
+    const lambdaEdgeFunction = new NodejsFunction(
+      this,
+      "DevbgScraper-FrontendLambda",
+      {
+        entry: path.resolve(__dirname, "./lambda.handler.ts"),
+      },
+    );
+
     new Distribution(this, "DevBgScraperFrontendDistribution", {
       defaultRootObject: "index.html",
       domainNames: ["sinilinx.com"],
@@ -37,6 +48,12 @@ export class FrontendStack extends Stack {
       defaultBehavior: {
         origin: new S3Origin(websiteBucket, { originAccessIdentity }),
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        edgeLambdas: [
+          {
+            eventType: LambdaEdgeEventType.VIEWER_REQUEST,
+            functionVersion: lambdaEdgeFunction.currentVersion,
+          },
+        ],
       },
       errorResponses: [
         {
