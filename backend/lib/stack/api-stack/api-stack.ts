@@ -1,4 +1,4 @@
-import { Stack, StackProps } from "aws-cdk-lib";
+import {CfnOutput, Stack, StackProps} from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { Table } from "aws-cdk-lib/aws-dynamodb";
 import { Cors, LambdaIntegration, RestApi } from "aws-cdk-lib/aws-apigateway";
@@ -65,5 +65,7 @@ export class ApiStack extends Stack {
         })
       )
     );
+
+    new CfnOutput(this, 'ApiGatewayUrl', { value: apiGateway.url });
   }
 }

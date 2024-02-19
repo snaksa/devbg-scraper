@@ -22,10 +22,17 @@ jobs:
         with:
           node-version: '20.x'
 
-      - run: rm frontend/.env && echo BACKEND_URL=$BACKEND_URL > frontend/.env
+      # Deploy Backend related resources
+      - run: rm backend/.env && echo DOMAIN_NAME=$DOMAIN_NAME"\n"HOSTED_ZONE_ID=$HOSTED_ZONE_ID > backend/.env
+      - run: npm install --prefix backend
+      - run: npm run --prefix backend cdk deploy "DevbgStorageStack, DevbgScraperStack, DevbgApiStack" -- --require-approval never --outputs-file "outputs.json"
+
+      # Build Frontend application
+      - run: rm frontend/.env
       - run: npm install --prefix frontend
+      # Generate .env file containing the API URL
+      - run: npm run generate-envs --prefix frontend
       - run: npm run build --prefix frontend
 
-      - run: rm backend/.env && echo CERTIFICATE_ARN=$CERTIFICATE_ARN > backend/.env
-      - run: npm install --prefix backend
-      - run: npm run --prefix backend cdk deploy "*" -- --require-approval never
+      # Deploy Frontend related resources
+      - run: npm run --prefix backend cdk deploy "DevbgFrontendStack" -- --require-approval never

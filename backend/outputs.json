@@ -1,0 +1,9 @@
+{
+  "DevbgStorageStack": {
+    "ExportsOutputFnGetAttDevbgScraperDbStore0727F2F0Arn8B4B08B7": "arn:aws:dynamodb:us-east-1:449286795894:table/DbStore"
+  },
+  "DevbgApiStack": {
+    "ApiGatewayUrl": "https://x8wzxoo947.execute-api.us-east-1.amazonaws.com/v1/",
+    "DevbgScraperRestApiEndpointE663F014": "https://x8wzxoo947.execute-api.us-east-1.amazonaws.com/v1/"
+  }
+}
