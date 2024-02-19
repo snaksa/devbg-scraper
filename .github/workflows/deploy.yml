@@ -9,8 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      BACKEND_URL: ${{ secrets.BACKEND_URL }}
-      CERTIFICATE_ARN: ${{ secrets.CERTIFICATE_ARN }}
+      DOMAIN_NAME: ${{ secrets.DOMAIN_NAME }}
+      HOSTED_ZONE_ID: ${{ secrets.HOSTED_ZONE_ID }}
     steps:
       - uses: actions/checkout@v4
       - uses: aws-actions/configure-aws-credentials@v1
