@@ -27,7 +27,8 @@ jobs:
       - run: mkdir frontend/out
 
       # Deploy Backend related resources
-      - run: rm backend/.env && echo DOMAIN_NAME=$DOMAIN_NAME"\n"HOSTED_ZONE_ID=$HOSTED_ZONE_ID > backend/.env
+      - run: rm backend/.env && echo DOMAIN_NAME=$DOMAIN_NAME$"\n"HOSTED_ZONE_ID=$HOSTED_ZONE_ID > backend/.env
+      - run: cat backend/.env
       - run: npm install --prefix backend
       - run: npm run --prefix backend cdk deploy "DevbgStorageStack" "DevbgScraperStack" "DevbgApiStack" -- --require-approval never --outputs-file "outputs.json"
 
