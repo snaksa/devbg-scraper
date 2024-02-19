@@ -22,6 +22,10 @@ jobs:
         with:
           node-version: '20.x'
 
+      # Create frontend out dir because CDK tries to synth all stacks even though we are deploying only a given list of stacks.
+      # At this point the out directory is not generated yet.
+      - run: mkdir frontend/out
+
       # Deploy Backend related resources
       - run: rm backend/.env && echo DOMAIN_NAME=$DOMAIN_NAME"\n"HOSTED_ZONE_ID=$HOSTED_ZONE_ID > backend/.env
       - run: npm install --prefix backend
