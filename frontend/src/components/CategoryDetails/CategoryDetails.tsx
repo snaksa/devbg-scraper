@@ -45,7 +45,7 @@ export default function CategoryDetails() {
   });
 
   if (!id) {
-    return 'ID not provided';
+    return <>ID not provided</>;
   }
 
   if (!category) {

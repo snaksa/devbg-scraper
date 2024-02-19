@@ -3,7 +3,7 @@ import CategoryDetails from '@/components/CategoryDetails/CategoryDetails';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Category | DevBG Scraper',
+  title: 'Category | DevBG Job Trends',
 };
 
 export default async function CategoryPage() {

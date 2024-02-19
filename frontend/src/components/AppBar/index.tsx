@@ -71,7 +71,7 @@ export default function AppBar() {
 
             <Box onClick={redirectToDashboard} sx={{ cursor: 'pointer' }}>
               <Typography variant="h6" noWrap>
-                DevBG
+                DevBG Job Trends
               </Typography>
             </Box>
           </Stack>

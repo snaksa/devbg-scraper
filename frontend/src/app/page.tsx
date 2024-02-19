@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import Dashboard from '@/components/Dashboard/Dashboard';
 
 export const metadata: Metadata = {
-  title: 'Home | DevBG Scraper',
+  title: 'Home | DevBG Job Trends',
 };
 
 export default async function Home() {
